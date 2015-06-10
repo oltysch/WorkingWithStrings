@@ -9,12 +9,26 @@ import java.util.List;
 public class FileWorks {
 
     public static String readFile(String fileName) throws FileNotFoundException {
-        StringBuilder stringBuilder = new StringBuilder();
-
+        StringBuilder sb = new StringBuilder();
+        File file = new File(fileName);
         exists(fileName);
 
-        return "";
+        try {
+            BufferedReader in = new BufferedReader(new FileReader( file.getAbsoluteFile()));
+            try {
+                String s;
+                while ((s = in.readLine()) != null) {
+                    sb.append(s);
+                    sb.append("\n");
+                }
+            } finally {
+                in.close();
+            }
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
 
+        return sb.toString();
     }
 
     public static void exists(String fileName) throws FileNotFoundException {
