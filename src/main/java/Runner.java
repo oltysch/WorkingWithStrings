@@ -8,6 +8,7 @@ import static logic.FileWorks.writeFile;
  */
 public class Runner {
     public static void main(String[] args) {
+
     }
 
     public void startDemonstrate() {
@@ -32,5 +33,4 @@ public class Runner {
             return testReadNumber();
         }
     }
-
 }
