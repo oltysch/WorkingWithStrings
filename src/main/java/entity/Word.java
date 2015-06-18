@@ -1,39 +1,23 @@
 package entity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Admin on 10.06.2015.
  */
 public class Word {
-    private String value;
+    private List<Char> characters;
 
-    public Word() {
+    public List<Char> getCharacters() {
+        return characters;
     }
 
-    public Word(String value) {
-
-        this.value = value;
+    public void setCharacters(List<Char> characters) {
+        this.characters = characters;
     }
 
-    public String getValue() {
+    public Word(List<Char> chars) {
+        characters = chars;
 
-        return value;
     }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public char[] toCharArray() {
-        char[] result= new char[value.length()];
-        System.arraycopy(value, 0, result, 0, value.length());
-        return result;
-    }
-
-    /*public Letter toLetterArray() {
-        char[] result= new char[value.length()];
-        System.arraycopy(value, 0, result, 0, value.length());
-        return result;
-    }*/
 }

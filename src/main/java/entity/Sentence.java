@@ -1,33 +1,23 @@
 package entity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Admin on 10.06.2015.
  */
 public class Sentence {
-    private ArrayList value;
+    private List<Word> words;
 
-    public Sentence() {
+    public List<Word> getWords() {
+        return words;
     }
 
-    public Sentence(ArrayList value) {
-
-        this.value = value;
+    public void setWords(List<Word> words) {
+        this.words = words;
     }
 
-    public ArrayList getValue() {
-
-        return value;
-    }
-
-    public void setValue(ArrayList value) {
-        this.value = value;
-    }
-
-    public ArrayList toWordArray() {
-        ArrayList<Word> result= new ArrayList<Word>();
-        System.arraycopy(value, 0, result, 0, value.size());
-        return result;
+    public Sentence(List<Word> words) {
+        this.words = words;
     }
 }

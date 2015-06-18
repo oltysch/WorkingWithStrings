@@ -1,42 +1,57 @@
 package logic;
-import entity.Letter;
-import entity.Sentence;
-import entity.Word;
+import entity.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Parser {
-    /**
-     * @param string
-     * @return ArrayList<Letter>
-     * Parse string on letters array
-     */
-    public static ArrayList<Letter> parseLetter(String string) {
-        ArrayList<Letter> result = new ArrayList<Letter>();
-        System.arraycopy(string, 0, result, 0, string.length());
-        /*for(char s: string.toCharArray()) {
-            letters.add(new Letter(s));
-        }*/
-        return result;
+
+    /*String regexParagraph = ("\\S+.+?(\\.|\\!|\\?)\\n");
+    Pattern patternParagraph = Pattern.compile(regexParagraph);
+    Matcher matcherParagraph = patternParagraph.matcher(text);*/
+
+    public Text parseText(String input) {
+        String[] temp = input.split("\\n");
+        List<Paragraph> paragraphs=new ArrayList<Paragraph>();
+        for (String part: temp) {
+            Paragraph paragraph = parseParagraph(part);
+            paragraphs.add(paragraph);
+        }
+        return new Text(paragraphs);
     }
 
-    /**
-     * @param word
-     * @return ArrayList<Letter>
-     * Parse word on letters array
-     */
-    public static ArrayList<Letter> parseLetter(Word word) {
-        ArrayList<Letter> result = new ArrayList<Letter>();
-        /*for(char s: word.toCharArray()) {
-            result.add(new Letter(s));
-        }*/
-        System.arraycopy(word.getValue(), 0, result, 0, word.getValue().length());
-        return result;
+    private Paragraph parseParagraph(String input) {
+        String[] temp = input.split("([.?!] )");
+        List<Sentence> sentences = new ArrayList<Sentence>();
+        for (String part: temp) {
+            Sentence sentence = parseSentence(part);
+            sentences.add(sentence);
+        }
+        return new Paragraph(sentences);
     }
 
-    public static ArrayList<Word> parseWord(Sentence offer) {
-        ArrayList<Word> result = new ArrayList<Word>();
-        System.arraycopy(offer, 0, result, 0, offer.getValue().size());
-        return result;
+    private Sentence parseSentence(String input) {
+        String[] temp = input.split("\\s");
+        List<Word> words = new ArrayList<Word>();
+        for (String part: temp) {
+            Word word = parseWord(part);
+            words.add(word);
+        }
+        return new Sentence(words);
     }
+
+    private Word parseWord(String input) {
+        List<Char> chars = new ArrayList<Char>();
+        for (int i=0; i<input.length(); i++) {
+            chars.add(new Char(input.charAt(i)));
+        }
+        return new Word(chars);
+    }
+
+//    trying make the universal parser
+    /*public Component parse() {
+        return new Component;
+    }*/
 }

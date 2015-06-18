@@ -1,3 +1,8 @@
+import entity.Paragraph;
+import entity.Text;
+import logic.FileWorks;
+import logic.Parser;
+
 import java.io.*;
 
 import static logic.FileWorks.updateFile;
@@ -7,8 +12,12 @@ import static logic.FileWorks.writeFile;
  * Created by Admin on 10.06.2015.
  */
 public class Runner {
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws FileNotFoundException {
+        Parser parser = new Parser();
+        String string = "Just test text. sentence 2 phash 89 uiyas.\n" +
+                "and an new paragraph. just one.\n" +
+                "or sfsf jsafe aeafe. eaefe safe effaf. eaefe oiaje joifeae.";
+        Text text = parser.parseText(string);
     }
 
     public void startDemonstrate() {
