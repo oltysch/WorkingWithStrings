@@ -12,6 +12,12 @@ public class Parser {
     Pattern patternParagraph = Pattern.compile(regexParagraph);
     Matcher matcherParagraph = patternParagraph.matcher(text);*/
 
+    public <T extends Composite> T parse(String s, Class<T> aClass) {
+        Class comosite = aClass.getDeclaringClass();
+
+        return null;
+    }
+
     public Text parseText(String input) {
         String[] temp = input.split("\\n");
         List<Paragraph> paragraphs=new ArrayList<Paragraph>();

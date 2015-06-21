@@ -86,13 +86,12 @@ public class FileWorks {
                     stringBuilder.append(s);
                     stringBuilder.append("\n");
                 }
+                return stringBuilder.toString();
             } finally {
                 in.close();
             }
         } catch(IOException e) {
-            throw new RuntimeException(e);
+            return null;
         }
-
-        return stringBuilder.toString();
     }
 }

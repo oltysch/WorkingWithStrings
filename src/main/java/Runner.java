@@ -1,23 +1,25 @@
-import entity.Paragraph;
 import entity.Text;
 import logic.FileWorks;
 import logic.Parser;
 
 import java.io.*;
 
-import static logic.FileWorks.updateFile;
-import static logic.FileWorks.writeFile;
-
 /**
  * Created by Admin on 10.06.2015.
  */
 public class Runner {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         Parser parser = new Parser();
-        String string = "Just test text. sentence 2 phash 89 uiyas.\n" +
-                "and an new paragraph. just one.\n" +
-                "or sfsf jsafe aeafe. eaefe safe effaf. eaefe oiaje joifeae.";
+        String string = null;
+        try {
+            string = FileWorks.readFile("123.txt");
+        } catch (FileNotFoundException e) {
+            string="Just test text. sentence 2 phash 89 uiyas.\n" +
+                    "and an new paragraph. just one.\n" +
+                    "or sfsf jsafe aeafe. eaefe safe effaf. eaefe oiaje joifeae.";
+        }
         Text text = parser.parseText(string);
+        System.out.println(text.toSourceString());
     }
 
     public void startDemonstrate() {
@@ -35,9 +37,9 @@ public class Runner {
         System.out.println("before try/catch");
         System.out.println("введите цифру:");
         try {
-            res=Integer.parseInt(reader.readLine());
+            res = Integer.parseInt(reader.readLine());
             return res;
-        }catch (Throwable e) {
+        } catch (Throwable e) {
             System.err.println("Ошибка! требуется ввести цифру.");
             return testReadNumber();
         }
