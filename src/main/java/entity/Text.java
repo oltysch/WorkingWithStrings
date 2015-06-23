@@ -6,28 +6,27 @@ import java.util.List;
  * Created by Admin on 18.06.2015.
  */
 public class Text implements Composite {
-    private List<Paragraph> listValues;
+    private List<Paragraph> paragraphs;
     private String bound;
 
-    public List<Paragraph> getListValues() {
-        return listValues;
+    public List<Paragraph> getParagraphs() {
+        return paragraphs;
     }
 
-    public void setListValues(List<Paragraph> listValues) {
-        this.listValues = listValues;
+    public void setParagraphs(List<Paragraph> paragraphs) {
+        this.paragraphs = paragraphs;
     }
 
     public Text(List<Paragraph> paragraphs) {
-        this.listValues = paragraphs;
+        this.paragraphs = paragraphs;
     }
 
     @Override
     public String toSourceString() {
         StringBuilder sb = new StringBuilder();
-        for (Paragraph paragraph : listValues) {
+        for (Paragraph paragraph : paragraphs) {
             sb.append(paragraph.toSourceString());
-            if (!(paragraph.getBound()==null))
-                sb.append(paragraph.getBound());
+            sb.append("\n");
         }
         if (!(bound==null))
             sb.append(bound);

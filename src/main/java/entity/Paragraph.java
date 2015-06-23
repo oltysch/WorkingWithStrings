@@ -3,28 +3,26 @@ package entity;
 import java.util.List;
 
 public class Paragraph implements Composite {
-    private List<Sentence> listValues;
+    private List<Sentence> sentences;
     private String bound;
 
-    public List<Sentence> getListValues() {
-        return listValues;
+    public List<Sentence> getSentences() {
+        return sentences;
     }
 
-    public void setListValues(List<Sentence> listValues) {
-        this.listValues = listValues;
+    public void setSentences(List<Sentence> sentences) {
+        this.sentences = sentences;
     }
 
     public Paragraph(List<Sentence> sentences) {
-        this.listValues = sentences;
+        this.sentences = sentences;
     }
 
     @Override
     public String toSourceString() {
         StringBuilder sb = new StringBuilder();
-        for (Sentence sentence : listValues) {
+        for (Sentence sentence : sentences) {
             sb.append(sentence.toSourceString());
-            if (!(sentence.getBound()==null))
-                sb.append(sentence.getBound());
         }
         if (!(bound==null))
             sb.append(bound);

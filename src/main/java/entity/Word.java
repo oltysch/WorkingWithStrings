@@ -6,26 +6,26 @@ import java.util.List;
  * Created by Admin on 10.06.2015.
  */
 public class Word implements Composite {
-    private List<Char> listValues;
+    private List<Char> chars;
     private String bound;
 
-    public List<Char> getListValues() {
-        return listValues;
+    public List<Char> getChars() {
+        return chars;
     }
 
-    public void setListValues(List<Char> listValues) {
-        this.listValues = listValues;
+    public void setChars(List<Char> chars) {
+        this.chars = chars;
     }
 
     public Word(List<Char> chars) {
-        listValues = chars;
+        this.chars = chars;
 
     }
 
     @Override
     public String toSourceString() {
         StringBuilder sb = new StringBuilder();
-        for (Char aChar : listValues) {
+        for (Char aChar : chars) {
             sb.append(aChar.toSourceString());
         }
         return sb.toString();
