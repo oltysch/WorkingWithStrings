@@ -5,41 +5,22 @@ import java.util.List;
 /**
  * Created by Admin on 18.06.2015.
  */
-public class Text implements Composite {
-    private List<Paragraph> paragraphs;
-    private String bound;
-
-    public List<Paragraph> getParagraphs() {
-        return paragraphs;
+public class Text extends AbstractComposite<Paragraph> {
+    public Text() {
     }
 
-    public void setParagraphs(List<Paragraph> paragraphs) {
-        this.paragraphs = paragraphs;
-    }
-
-    public Text(List<Paragraph> paragraphs) {
-        this.paragraphs = paragraphs;
+    @Override
+    public void add(Paragraph paragraph) {
+        super.add(paragraph);
     }
 
     @Override
     public String toSourceString() {
-        StringBuilder sb = new StringBuilder();
-        for (Paragraph paragraph : paragraphs) {
-            sb.append(paragraph.toSourceString());
-            sb.append("\n");
-        }
-        if (!(bound==null))
-            sb.append(bound);
-        return sb.toString();
+        return super.toSourceString();
     }
 
     @Override
-    public String getBound() {
-        return bound;
-    }
-
-    @Override
-    public void setBound(String bound) {
-        this.bound = bound;
+    public Paragraph get(int index) {
+        return super.get(index);
     }
 }

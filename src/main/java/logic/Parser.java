@@ -23,56 +23,57 @@ public class Parser {
     public void configure(PropertyManager pm) {
         paragraph = pm.getProperty("paragraph.regex");
         sentence = pm.getProperty("sentence.regex");
-        sentenceBorder = pm.getProperty("sentenceBorder.regex");
+//        sentenceBorder = pm.getProperty("sentenceBorder.regex");
         word = pm.getProperty("word.regex");
         wordBorder = pm.getProperty("wordBorder.regex");
     }
 
     public Text parseText(String input) {
-        String[] temp = input.split(paragraph);
-        List<Paragraph> paragraphs=new ArrayList<Paragraph>();
-        for (String part: temp) {
-            Paragraph paragraph = parseParagraph(part);
-            paragraphs.add(paragraph);
+        Text text = new Text();
+//        String[] temp = input.split(paragraph);
+        Pattern pattern = Pattern.compile(paragraph);
+        Matcher matcher = pattern.matcher(input);
+        while (matcher.find()) {
+            text.add(parseParagraph(matcher.group()));
         }
-        return new Text(paragraphs);
+        /*for (String part: temp) {
+            Paragraph paragraph = parseParagraph(part);
+            text.add(paragraph);
+        }*/
+        return text;
     }
 
     private Paragraph parseParagraph(String input) {
+        Paragraph paragraph = new Paragraph();
         Pattern pattern = Pattern.compile(sentence);
         Matcher matcher = pattern.matcher(input);
-        List<Sentence> sentences = new ArrayList<Sentence>();
         while (matcher.find()) {
-            if (!matcher.group().matches(sentenceBorder)) {
-                sentences.add(parseSentence(matcher.group()));
-            } else {
-                if (sentences.size() > 0)
-                    sentences.get(sentences.size() - 1).setBound(matcher.group());
-            }
+            paragraph.add(parseSentence(matcher.group()));
         }
-        return new Paragraph(sentences);
+        return paragraph;
     }
 
     private Sentence parseSentence(String input) {
+        Sentence sentence = new Sentence();
         Pattern pattern = Pattern.compile(word);
         Matcher matcher = pattern.matcher(input);
-        List<Word> words = new ArrayList<Word>();
         while (matcher.find()) {
             if (!matcher.group().matches(wordBorder)) {
-                words.add(parseWord(matcher.group()));
+                sentence.add(parseWord(matcher.group()));
             } else {
-                if (words.size() > 0)
-                    words.get(words.size() - 1).setBound(matcher.group());
+                for (int i = 0; i < matcher.group().length(); i++) {
+                    sentence.add(new Char(matcher.group().charAt(i)));
+                }
             }
         }
-        return new Sentence(words);
+        return sentence;
     }
 
     private Word parseWord(String input) {
-        List<Char> chars = new ArrayList<Char>();
+        Word word = new Word();
         for (int i=0; i<input.length(); i++) {
-            chars.add(new Char(input.charAt(i)));
+            word.add(new Char(input.charAt(i)));
         }
-        return new Word(chars);
+        return word;
     }
 }

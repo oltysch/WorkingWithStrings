@@ -1,5 +1,5 @@
 import entity.Text;
-import logic.FileWorks;
+import logic.FileWorker;
 import logic.Parser;
 import util.PropertyManager;
 
@@ -19,7 +19,7 @@ public class Runner {
         parser.configure(propertyManager);
         String string = null;
         try {
-            string = FileWorks.readFile("123.txt");
+            string = FileWorker.readFile("123.txt");
         } catch (FileNotFoundException e) {
             string = "Just test text. sentence 2 phash, 89 uiyas.\n" +
                     "and an new paragraph. just one. and one sentence, with puntctuations!\n" +
@@ -28,23 +28,9 @@ public class Runner {
         Text text = parser.parseText(string);
         System.out.println("Исходный текст: \n" + string + "\n");
         System.out.println("Результат:\n" + text.toSourceString());
-    }
-
-    /**
-     * @return int (user input)
-     * Just tests, do not use this method.
-     * Requests enter the number to the correct input
-     */
-    public static int testReadNumber() {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        int res;
-        System.out.println("введите цифру:");
-        try {
-            res = Integer.parseInt(reader.readLine());
-            return res;
-        } catch (Throwable e) {
-            System.err.println("Ошибка! требуется ввести цифру.");
-            return testReadNumber();
-        }
+        String str = text.get(1).get(2).get(4).toSourceString();
+        String str2 = text.get(1).get(2).get(5).toSourceString();
+        String str3 = text.get(1).get(2).get(6).toSourceString();
+        System.out.println("Результат вывода по одному элементу:\n" + "\n" + str + "\n" + str2 + "\n" + str3);
     }
 }

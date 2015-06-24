@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Admin on 10.06.2015.
  */
-public class FileWorks {
+public class FileWorker {
 
     /**
      * @param fileName
