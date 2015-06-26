@@ -5,7 +5,6 @@ import java.util.List;
 public class Paragraph extends AbstractComposite<Sentence> {
 
     public Paragraph() {
-        super();
     }
 
     @Override

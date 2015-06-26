@@ -1,9 +1,8 @@
 package logic;
+
 import entity.*;
 import util.PropertyManager;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,15 +12,33 @@ public class Parser {
     private String sentenceBorder = "";
     private String word = "";
     private String wordBorder = "";
+    private PropertyManager propertyManager;
 
 
     public <T extends Composite> T parse(String input, String inputClass) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        PropertyManager pm = new PropertyManager("parser.properties");
-        String sClass = pm.getProperty(inputClass);
+        String sClass = propertyManager.getProperty(inputClass);
+        Class<T> cClass = (Class<T>) Class.forName("entity." + inputClass);
+        T t = cClass.newInstance();
+
+        String regex = propertyManager.getProperty(sClass + ".regex");
+        String regexBorder = propertyManager.getProperty(sClass + "Border.regex");
+        if (regex != null) {
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(input);
+            while (matcher.find())
+                if ((regexBorder != null) && (matcher.group().matches(regexBorder)))
+                    t.add(new Char(matcher.group().charAt(0)));
+                else t.add(parse(matcher.group(), sClass));
+        } else {
+            t = (T) parseWord(input);
+        }
+        return t;
+
+        /*String sClass = propertyManager.getProperty(inputClass);
         Class cClass = Class.forName("entity." + inputClass);
         T t = (T) cClass.newInstance();
-        String regex = pm.getProperty(sClass + ".regex");
-        String regexBorder = pm.getProperty(sClass + "Border.regex");
+        String regex = propertyManager.getProperty(sClass + ".regex");
+        String regexBorder = propertyManager.getProperty(sClass + "Border.regex");
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
         while (matcher.find()) {
@@ -29,7 +46,6 @@ public class Parser {
                 t.add(parse(matcher.group(), sClass));
             } else {
                 if (!matcher.group().matches(regexBorder)) {
-                    //it's may be a problem
                     t.add(parseWord(matcher.group()));
                 } else {
                     for (int i = 0; i < matcher.group().length(); i++) {
@@ -38,15 +54,44 @@ public class Parser {
                 }
             }
         }
-        return t;
+        return t;*/
     }
 
-    public void configure(PropertyManager pm) {
-        paragraph = pm.getProperty("Paragraph.regex");
-        sentence = pm.getProperty("Sentence.regex");
+    public Parser() {
+    }
+
+    public Parser(PropertyManager propertyManager) {
+        this.propertyManager = propertyManager;
+    }
+
+    public void setPropertyManager(PropertyManager propertyManager) {
+        this.propertyManager = propertyManager;
+    }
+
+    /**
+     * @param propertyManager configures the properties, uses specified propertyManager
+     *                        USELESS FOR METHOD "parse"
+     *                        works only in parseText, parseParagraph, parseSentence.
+     */
+    public void configure(PropertyManager propertyManager) {
+        paragraph = propertyManager.getProperty("Paragraph.regex");
+        sentence = propertyManager.getProperty("Sentence.regex");
 //        sentenceBorder = pm.getProperty("sentenceBorder.regex");
-        word = pm.getProperty("Word.regex");
-        wordBorder = pm.getProperty("WordBorder.regex");
+        word = propertyManager.getProperty("Word.regex");
+        wordBorder = propertyManager.getProperty("WordBorder.regex");
+    }
+
+    /**
+     * configures the properties, uses self propertyManager
+     * USELESS FOR METHOD "parse"
+     * works only in parseText, parseParagraph, parseSentence.
+     */
+    public void configure() {
+        paragraph = propertyManager.getProperty("Paragraph.regex");
+        sentence = propertyManager.getProperty("Sentence.regex");
+//        sentenceBorder = pm.getProperty("sentenceBorder.regex");
+        word = propertyManager.getProperty("Word.regex");
+        wordBorder = propertyManager.getProperty("WordBorder.regex");
     }
 
     public Text parseText(String input) {
@@ -64,7 +109,7 @@ public class Parser {
         return text;
     }
 
-    private Paragraph parseParagraph(String input) {
+    public Paragraph parseParagraph(String input) {
         Paragraph paragraph = new Paragraph();
         Pattern pattern = Pattern.compile(sentence);
         Matcher matcher = pattern.matcher(input);
@@ -74,7 +119,7 @@ public class Parser {
         return paragraph;
     }
 
-    private Sentence parseSentence(String input) {
+    public Sentence parseSentence(String input) {
         Sentence sentence = new Sentence();
         Pattern pattern = Pattern.compile(word);
         Matcher matcher = pattern.matcher(input);
@@ -90,9 +135,9 @@ public class Parser {
         return sentence;
     }
 
-    private Word parseWord(String input) {
+    public Word parseWord(String input) {
         Word word = new Word();
-        for (int i=0; i<input.length(); i++) {
+        for (int i = 0; i < input.length(); i++) {
             word.add(new Char(input.charAt(i)));
         }
         return word;

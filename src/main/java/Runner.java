@@ -1,5 +1,7 @@
 import entity.Paragraph;
+import entity.Sentence;
 import entity.Text;
+import entity.Word;
 import logic.FileWorker;
 import logic.Parser;
 import util.PropertyManager;
@@ -15,9 +17,9 @@ public class Runner {
     }
 
     public static void startDemonstrate() throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-        Parser parser = new Parser();
         PropertyManager propertyManager = new PropertyManager("parser.properties");
-        parser.configure(propertyManager);
+        Parser parser = new Parser(propertyManager);
+//        parser.configure(propertyManager);
         String string = null;
         Paragraph par = new Paragraph();
         try {
@@ -35,6 +37,8 @@ public class Runner {
         String str3 = text.get(1).get(2).get(6).toSourceString();
         System.out.println("Результат вывода по одному элементу:\n" + "\n" + str + "\n" + str2 + "\n" + str3);*/
 
+//        Word wrd = parser.parse("longlusiudf", "Word");
+//        System.out.println(wrd.toSourceString());
         Text text2 = parser.parse(string, "Text");
         System.out.println("Исходный текст: \n" + string + "\n");
         System.out.println("Результат:\n" + text2.toSourceString());
